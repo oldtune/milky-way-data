@@ -1,5 +1,4 @@
 using AutoMapper;
-using Data.Entities;
 
 namespace QuackQuack.Configs;
 public class AutoMapperConfig : Profile

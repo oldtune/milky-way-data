@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 public interface IMediumFetcher
 {
-    Task<IEnumerable<SyndicationItem>> GetPosts(string username);
+    Task<IEnumerable<SyndicationItem>> FetchPosts(string username);
 }
 
 public class MediumFetcher
@@ -16,7 +16,7 @@ public class MediumFetcher
         _logger = logger;
     }
 
-    public async Task<List<SyndicationItem>> GetPosts(string username)
+    public async Task<List<MediumPost>> FetchPosts(string username)
     {
         try
         {
@@ -24,7 +24,7 @@ public class MediumFetcher
             using var reader = XmlReader.Create(url);
             var feed = SyndicationFeed.Load(reader);
             var items = feed.Items;
-            return items.ToList();
+            return items.Select(x => MediumSyndicationPostMapping.Map(x)).ToList();
         }
         catch (Exception ex)
         {
